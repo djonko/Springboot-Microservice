@@ -1,7 +1,12 @@
 server:
   port: 8761
-
 eureka:
+  instance:
+    hostname: "eureka-0.eureka"
   client:
     register-with-eureka: false
     fetch-registry: false
+    service-url:
+      defaultZone: ${EUREKA_SERVER_ADDRESS}
+  server:
+    renewal-percent-threshold: 0.85

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-app
+  labels:
+    app: user-service-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: user-service-app
+      labels:
+        app: user-service-app
+    spec:
+      containers:
+        - name: user-service-app
+          image: djonko/dailycodebuffer_user-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9002
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: user-service-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-svc
+spec:
+  selector:
+    app: user-service-app
+  ports:
+    - port: 80
+      targetPort: 9002

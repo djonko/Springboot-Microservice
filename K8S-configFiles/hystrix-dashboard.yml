@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hystrix-dashboard-app
+  labels:
+    app: hystrix-dashboard-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: hystrix-dashboard-app
+      labels:
+        app: hystrix-dashboard-app
+    spec:
+      containers:
+        - name: hystrix-dashboard-app
+          image: djonko/dailycodebuffer_hystrix-dashboard:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9295
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: hystrix-dashboard-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hystrix-dashboard-svc
+spec:
+  selector:
+    app: hystrix-dashboard-app
+  ports:
+    - port: 80
+      targetPort: 9295
+  type: NodePort
